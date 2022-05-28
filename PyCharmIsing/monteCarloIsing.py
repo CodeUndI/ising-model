@@ -2,18 +2,13 @@ import numpy as np
 import pandas as pd
 import singleFlipDynamic as sf
 import matplotlib.pyplot as plt
+from timeit import default_timer as timer
 
+start = timer() # mierzenie czasu wykonwyania
 
-def saveData(data,name):
-    """ Zapisauje dane do pliku csv
-    data - tablica dwuwymiarowa
-    name - string w formacie nazwa.csv """
-    df = pd.DataFrame(data=data.astype(float))
-    df = df.astype(int)
-    df.to_csv(name, sep=' ', header=False, index=False)
+#sf.SaveSpinsAndTrajectory(5,1,100000)
+sf.SaveMagAndPod([1,3.5],10,10000)
 
-m, t, data  = sf.MCSIsing(10,2.16,10000, orderly=False)
+end = timer()
+print(end - start)
 
-plt.plot(t, m)
-plt.show()
-print(data)
