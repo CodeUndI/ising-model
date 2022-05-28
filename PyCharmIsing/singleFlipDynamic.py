@@ -1,12 +1,32 @@
 import random
+import numpy as np
+import pandas as pd
 import math
 
-#Pojedyncza aktualizacja uładu
+def MCSIsing(L, T, steps, orderly = True):
+    data = np.ones((L, L))
+    data_list = [data]
+    if orderly != True:         # ustawia losowe wartości spinów
+       for i in range(L):
+           for j in range(L):
+               u = random.random()
+               if u >= 0.5:
+                   data[i,j] = -1
+    m = [sum(sum(data))/L**2]
+    t = list(range(0,steps+1))
+    for j in range(4):
+        for i in range(int(steps/4)):
+            m.append(MCSFlip(data,L,T))
+        data_list.append(data)
+
+    return m, t, data_list
+
 
 def MCSFlip(data,L,T):
     """Sekewencja zmiany spinów dla 1 kroku Monte Carlo"""
     for i in range(L**2):
         singleFlip(data, L, T)
+    return sum(sum(data))/L**2
 
 def singleFlip(data, L, T):
     """Sekwencyjna zmiana pojedynczego spinu
