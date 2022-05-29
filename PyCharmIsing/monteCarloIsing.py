@@ -6,8 +6,15 @@ from timeit import default_timer as timer
 
 start = timer() # mierzenie czasu wykonwyania
 
-#sf.SaveSpinsAndTrajectory(5,1,100000)
-sf.SaveMagAndPod([1,3.5],10,10000)
+
+sf.SaveTrajectory(10, 100, 1.7, 10000, orderly=False)
+sf.SaveTrajectory(10, 50, 1.7, 5000, orderly=False)
+
+
+
+#sf.SaveMagAndPod([1,3.5],10,50000)
+#sf.SaveMagAndPod([1,3.5],50,50000)
+#sf.SaveMagAndPod([1,3.5],100,50000)
 
 end = timer()
 print(end - start)

@@ -5,7 +5,7 @@ import math
 
 def SaveMagAndPod(range_T, L, steps, orderly = True):
     """Zwraca przedział czasowy, wartości magnetyzacji, wartości podatności"""
-    T = np.linspace(range_T[0], range_T[1], 20)
+    T = np.linspace(range_T[0], range_T[1], 40)
     mag = []
     pod = []
     for i in T:
@@ -30,13 +30,35 @@ def MCSIsingForMagAndPod(L, T, steps, orderly = True):
     m = [sum(sum(data))/L**2]
     for i in range(int(steps)):
         m.append(MCSFlip(data,L,T))
-    mag = sum(np.abs(m))/(steps+1)
-    pod = L**2*(sum([i**2 for i in m])-mag**2)/T
+    new_m = m[10000:]
+    length = len(new_m)
+    mag = sum(np.abs(new_m))/length
+    pod = L**2*(sum([i**2 for i in new_m])/length-mag**2)/T
     return mag, pod
+
+def SaveTrajectory(n, L, T, steps, orderly = True):
+    for i in range(n):
+        m = justM(L, T, steps, orderly)
+        saveList(m, 'mListL'+str(L)+'T'+str(T)+'Nr'+str(i)+'.txt')
+
+def justM(L,T,steps, orderly = True):
+    data = np.ones((L, L))
+    if orderly != True:  # ustawia losowe wartości spinów
+        for i in range(L):
+            for j in range(L):
+                u = random.random()
+                if u >= 0.5:
+                    data[i, j] = -1
+    m = [sum(sum(data)) / L ** 2]
+    for i in range(int(steps)):
+        m.append(MCSFlip(data, L, T))
+    return m
+
+
 
 def SaveSpinsAndTrajectory(L, T, steps, orderly = True):
     m, t, data_list = MCSIsing(L, T, steps, orderly)
-    saveList(m, 'mListL'+str(L)+'.txt')
+    saveList(m, 'mListL'+str(L)+'T'+str(T)+'.txt')
 
 def MCSIsing(L, T, steps, orderly = True):
     """Dla zadanej wielkości tworzy siatkę spinów,
@@ -57,7 +79,7 @@ def MCSIsing(L, T, steps, orderly = True):
         for i in range(int(steps/4)):
             m.append(MCSFlip(data,L,T))
         data_list.append(data)
-        saveData(data_list[j+1], 'spinsL'+str(L)+'stateNumber'+str(j+1)+'.csv')
+        saveData(data_list[j+1], 'spinsL'+str(L)+'T'+str(T)+'stateNumber'+str(j+1)+'.csv')
     return m, t, data_list
 
 

@@ -1,0 +1,5 @@
+#!D:\!!! STUDIA\SEMESTR 4\FIZYKA UKŁADÓW ZŁOŻONYCH\SYMULACJA MODELU ISINGA\ising-model\PyCharmIsing\venv\Scripts\python.exe
+from spline.application import main
+
+if __name__ == "__main__":
+    main()
